@@ -8,7 +8,7 @@
     "start": "nodemon server.js",
     "lint": "eslint ./"
   },
-  "keywords": [    
+  "keywords": [
     "nodejs",
     "express",
     "rest",
@@ -24,7 +24,8 @@
     "express": "^4.17.1",
     "mysql2": "^2.2.5",
     "nodemon": "^2.0.7",
-    "sequelize": "^6.6.2"
+    "sequelize": "^6.6.2",
+    "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {
     "eslint": "^7.26.0",
