@@ -22,7 +22,7 @@ db.sequelize = sequelize;
 db.employee = require('./employee.model')(sequelize, Sequelize);
 db.role = require('./role.model')(sequelize, Sequelize);
 
-db.role.hasMany(db.employee, { foreignKey: 'role_id' });
-db.employee.belongsTo(db.role, { foreignKey: 'role_id' });
+db.role.hasMany(db.employee, { foreignKey: 'role_id', as: 'employee' });
+db.employee.belongsTo(db.role, { foreignKey: 'role_id', as: 'role' });
 
 module.exports = db;

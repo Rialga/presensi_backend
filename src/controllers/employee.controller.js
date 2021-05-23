@@ -7,7 +7,7 @@ exports.allData = (req, res) => {
   const lastName = req.query.search;
   const condition = lastName ? { last_name: { [Op.last_name]: `%${lastName}%` } } : null;
 
-  Employee.findAll({ where: condition })
+  Employee.findAll({ where: condition, include: ['role'] })
     .then((data) => {
       res.send(data);
     })
@@ -21,7 +21,7 @@ exports.allData = (req, res) => {
 
 exports.detail = (req, res) => {
   const { id } = req.params;
-  Employee.findByPk(id)
+  Employee.findByPk(id, { include: ['role'] })
     .then((data) => {
       res.status(200).send({
         message: 'Success',
