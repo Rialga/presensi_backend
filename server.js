@@ -18,6 +18,7 @@ app.get('/', (req, res) => {
 });
 
 require('./src/routes/role.routes')(app);
+require('./src/routes/employee.routes')(app);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

@@ -3,17 +3,30 @@ const db = require('../model');
 const Employee = db.employee;
 // const { Op } = db.Sequelize;
 
-exports.allData = (req, res) => {
+exports.allData = (res) => {
   Employee.findAll()
     .then((data) => {
-      res.statusCode = 200;
-      res.statusMessage = 'ini Data Role';
-      res.send(data);
+      res.status(200).send({
+        message: 'Success',
+        data,
+      });
     })
     .catch((err) => {
       res.status(500).send({
         message:
-            err.message || 'Some error occurred while retrieving tutorials.',
+            err.message || 'Gagal Mendapatkan Data Employee.',
       });
     });
+};
+
+exports.create = (req, res) => {
+  if (!req.body.title) {
+    res.status(400).send({
+      message: 'Konten Tidak Boleh Kosong!',
+    });
+  }
+  const employeeRequest = {
+    
+  };
+
 };
