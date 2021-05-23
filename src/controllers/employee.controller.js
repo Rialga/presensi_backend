@@ -76,7 +76,8 @@ exports.update = (req, res) => {
     });
   } else {
     Employee.update(req.body, {
-      where: { id },
+      // eslint-disable-next-line object-shorthand
+      where: { id: id },
     })
       .then((num) => {
         if (num < 1) {
@@ -121,4 +122,36 @@ exports.delete = (req, res) => {
           err.message || `Tidak dapat menghapus employee dengan ID=${id}`,
       });
     });
+};
+
+exports.updateGaji = (req, res) => {
+  const { id } = req.params;
+
+  if (!req.body.salary) {
+    res.status(400).send({
+      message: 'Gaji Tidak Boleh Kosong!',
+    });
+  } else {
+    Employee.update(req.body, {
+      // eslint-disable-next-line object-shorthand
+      where: { id: id },
+    })
+      .then((num) => {
+        if (num < 1) {
+          res.send({
+            message: `Tidak dapat Mengupdate data Gaji dengan id = ${id}. Employee tidak ditemukan`,
+          });
+        } else {
+          res.send({
+            message: `Berhasil Update GAJI dengan id=${id}!`,
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message || `Error update GAJI dengan ID=${id}`,
+        });
+      });
+  }
 };

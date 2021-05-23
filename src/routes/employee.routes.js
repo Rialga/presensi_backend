@@ -9,7 +9,7 @@ module.exports = (app) => {
   router.put('/:id', employee.update);
 
   router.get('/:id', employee.detail);
-  router.put('/updatespesifik/:id', employee.update);
+  router.put('/updateGaji/:id', employee.updateGaji);
 
   app.use('/api/employee', router);
 };
