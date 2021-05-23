@@ -6,9 +6,10 @@ const Role = db.role;
 exports.allData = (req, res) => {
   Role.findAll()
     .then((data) => {
-      res.statusCode = 200;
-      res.statusMessage = 'ini Data Role';
-      res.send(data);
+      res.status(200).send({
+        message: 'Success',
+        data,
+      });
     })
     .catch((err) => {
       res.status(500).send({

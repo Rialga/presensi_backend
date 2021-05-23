@@ -1,10 +1,27 @@
 const db = require('../model');
 
 const Employee = db.employee;
-// const { Op } = db.Sequelize;
+const { Op } = db.Sequelize;
 
-exports.allData = (res) => {
-  Employee.findAll()
+exports.allData = (req, res) => {
+  const lastName = req.query.search;
+  const condition = lastName ? { last_name: { [Op.last_name]: `%${lastName}%` } } : null;
+
+  Employee.findAll({ where: condition })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || 'Tidak Dapat Mengambil data Employee.',
+      });
+    });
+};
+
+exports.detail = (req, res) => {
+  const { id } = req.params;
+  Employee.findByPk(id)
     .then((data) => {
       res.status(200).send({
         message: 'Success',
@@ -50,10 +67,41 @@ exports.create = (req, res) => {
   }
 };
 
+exports.update = (req, res) => {
+  const { id } = req.params;
+
+  if (!req.body.first_name || !req.body.last_name || !req.body.email || !req.body.phone || !req.body.salary || !req.body.role_id) {
+    res.status(400).send({
+      message: 'Konten Tidak Boleh Kosong!',
+    });
+  } else {
+    Employee.update(req.body, {
+      where: { id },
+    })
+      .then((num) => {
+        if (num < 1) {
+          res.send({
+            message: `Tidak dapat Mengupdate data Employee dengan id = ${id}. Employee tidak ditemukan`,
+          });
+        } else {
+          res.send({
+            message: `Berhasil Update Employee dengan id=${id}!`,
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message || `Error update employee dengan ID=${id}`,
+        });
+      });
+  }
+};
+
 exports.delete = (req, res) => {
   const { id } = req.params;
 
-  Employee.destroy({
+  Employee.update({
     where: { id },
   })
     .then((num) => {
@@ -70,7 +118,7 @@ exports.delete = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message:
-        err.message || `Tidak dapat menghapus employee dengan ID=${id}`,
+          err.message || `Tidak dapat menghapus employee dengan ID=${id}`,
       });
     });
 };
